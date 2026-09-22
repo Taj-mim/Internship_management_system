@@ -1,0 +1,157 @@
+-- database: ./db.sqlite3
+
+
+-- =========================================================
+-- CREATE 10 STUDENT USERS
+-- =========================================================
+
+INSERT INTO accounts_user
+(
+    password,
+    last_login,
+    is_superuser,
+    username,
+    first_name,
+    last_name,
+    email,
+    is_staff,
+    is_active,
+    date_joined,
+    role
+)
+VALUES
+(
+    'testpassword',
+    NULL,
+    0,
+    'teststudent01',
+    'Student',
+    '01',
+    'student01@test.com',
+    0,
+    1,
+    datetime('now'),
+    'STUDENT'
+);
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent02', 'Student', '02',
+ 'student02@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent03', 'Student', '03',
+ 'student03@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent04', 'Student', '04',
+ 'student04@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent05', 'Student', '05',
+ 'student05@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent06', 'Student', '06',
+ 'student06@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent07', 'Student', '07',
+ 'student07@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent08', 'Student', '08',
+ 'student08@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent09', 'Student', '09',
+ 'student09@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+INSERT INTO accounts_user
+(
+    password, last_login, is_superuser, username, first_name, last_name,
+    email, is_staff, is_active, date_joined, role
+)
+VALUES
+('testpassword', NULL, 0, 'teststudent10', 'Student', '10',
+ 'student10@test.com', 0, 1, datetime('now'), 'STUDENT');
+
+ 
+INSERT INTO accounts_apply
+(
+    job_id,
+    user_id,
+    full_name,
+    email,
+    phone,
+    resume_file,
+    resume_file_name,
+    cover_letter_file,
+    cover_letter_file_name,
+    status,
+    applied_date
+)
+SELECT
+    25,
+    id,
+    first_name || ' ' || last_name,
+    'lamiaj2002@gmail.com',
+    '01800000000',
+    'resumes/test_resume.pdf',
+    'test_resume.pdf',
+    'cover_letters/test_cover.pdf',
+    'test_cover.pdf',
+    'Pending',
+    datetime('now')
+FROM accounts_user
+WHERE username IN (
+    'teststudent01',
+    'teststudent02',
+    'teststudent03',
+    'teststudent04',
+    'teststudent05',
+    'teststudent06',
+    'teststudent07',
+    'teststudent08',
+    'teststudent09',
+    'teststudent10'
+);

@@ -1,0 +1,385 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Admin Dashboard | InternHub
+{% endblock %}
+
+{% block content %}
+
+
+<div class="d-flex">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div
+        class="text-white p-3"
+        style="background-color: #4e73df; min-width: 200px; min-height: 100vh;"
+    >
+
+        <h4 class="text-center mb-4">
+            Admin
+        </h4>
+
+
+        <a
+            href="{% url 'admin_dashboard' %}"
+            class="d-block text-white bg-white bg-opacity-25 fw-bold py-2 px-3 mb-1 text-decoration-none rounded"
+        >
+            Dashboard
+        </a>
+
+
+        <a
+            href="{% url 'CRUD_post' %}"
+            class="d-block text-white py-2 px-3 mb-1 text-decoration-none"
+        >
+            Internship Post
+        </a>
+
+
+        <a
+            href="{% url 'student_list' %}"
+            class="d-block text-white py-2 px-3 mb-1 text-decoration-none"
+        >
+            Applicants
+        </a>
+
+        <a
+            href="{% url 'CRUD_org' %}"
+            class="d-block text-white py-2 px-3 mb-1 text-decoration-none"
+        >
+            Organizations
+        </a>
+
+        <a
+            href="{% url 'CRUD_application' %}"
+            class="d-block text-white py-2 px-3 mb-1 text-decoration-none"
+        >
+            Applications
+        </a>
+
+        <a
+            href="{% url 'notifications' %}"
+            class="d-block text-white py-2 px-3 mb-1 text-decoration-none"
+        >
+            Notifications
+            {% if unread_notifications_count > 0 %}
+                <span class="badge bg-danger ms-1">{{ unread_notifications_count }}</span>
+            {% endif %}
+        </a>
+
+    </div>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="flex-fill p-4">
+
+        <h3 class="mb-4">
+            Admin Dashboard
+        </h3>
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-3">
+
+                <div class="card bg-warning text-white text-center p-3">
+
+                    <div>
+                        Total Jobs
+                    </div>
+
+                    <strong class="fs-4">
+                        {{ total_jobs }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="card bg-success text-white text-center p-3">
+
+                    <div>
+                        Applications
+                    </div>
+
+                    <strong class="fs-4">
+                        {{ total_applications }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="card bg-danger text-white text-center p-3">
+
+                    <div>
+                        Total Applicants
+                    </div>
+
+                    <strong class="fs-4">
+                        {{ total_applicants }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="card bg-info text-white text-center p-3">
+
+                    <div>
+                        Organizations
+                    </div>
+
+                    <strong class="fs-4">
+                        {{ total_organizations }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= LOWER SECTION ================= -->
+
+        <div class="row g-3">
+
+
+            <!-- JOB POSTING CHART -->
+
+            <div class="col-md-8">
+
+                <div class="card p-3 h-100">
+
+                    <h5 class="mb-3">
+                        Job Posting Trend
+                    </h5>
+
+                    <div style="height: 250px;">
+
+                        <canvas id="chart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="col-md-4">
+
+                <div class="card p-3 h-100">
+
+                    <h5 class="mb-3">
+                        Recent Activity
+                    </h5>
+
+                    <ul class="mb-0">
+
+                        {% for job in recent_jobs %}
+
+                            <li class="mb-2">
+                                Job "{{ job.title }}" posted by {{ job.organization }}
+                            </li>
+
+                        {% empty %}
+
+                            <li class="mb-2 text-muted">
+                                No jobs posted yet.
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= NOTIFICATIONS ================= -->
+
+        <div class="row g-3 mt-1">
+
+            <div class="col-md-5">
+
+                <div class="card p-3 h-100">
+
+                    <h5 class="mb-3">
+                        Send Notification
+                    </h5>
+
+                    <form method="post" action="{% url 'admin_dashboard' %}">
+
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="send_notification">
+
+                        <div class="mb-2">
+
+                            <label class="form-label">
+                                Audience
+                            </label>
+
+                            <select name="audience" class="form-select">
+                                <option value="all">All Users</option>
+                                <option value="students">All Students</option>
+                                <option value="companies">All Organizations</option>
+                            </select>
+
+                        </div>
+
+                        <div class="mb-2">
+
+                            <label class="form-label">
+                                Message
+                            </label>
+
+                            <textarea
+                                name="message"
+                                class="form-control"
+                                rows="3"
+                                placeholder="Write a notification message..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Send Notification
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-7">
+
+                <div class="card p-3 h-100">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">
+                            Recently Sent Notifications
+                        </h5>
+
+                        <a href="{% url 'notifications' %}" class="small">
+                            View my notifications →
+                        </a>
+
+                    </div>
+
+                    <ul class="mb-0">
+
+                        {% for notification in recent_notifications %}
+
+                            <li class="mb-2">
+                                <strong>{{ notification.user.username|default:notification.email }}:</strong>
+                                {{ notification.message }}
+                            </li>
+
+                        {% empty %}
+
+                            <li class="mb-2 text-muted">
+                                No notifications sent yet.
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CHART ================= -->
+
+<script>
+
+const labels = {{ chart_labels|safe }};
+
+const data = {{ chart_data|safe }};
+
+
+new Chart(
+    document.getElementById('chart'),
+    {
+        type: 'line',
+
+        data: {
+            labels: labels,
+
+            datasets: [{
+                label: 'New Jobs',
+                data: data,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+
+            scales: {
+
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Day'
+                    }
+                },
+
+                y: {
+                    beginAtZero: true,
+
+                    title: {
+                        display: true,
+                        text: 'New Jobs'
+                    }
+                }
+
+            }
+
+        }
+    }
+);
+
+</script>
+
+{% endblock %}

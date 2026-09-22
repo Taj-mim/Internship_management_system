@@ -1,0 +1,27 @@
+django-admin startproject internship 
+cd internship
+
+py manage.py makemigrations internship
+py manage.py createsuperuser (lamia, lj@g.com, password Aa@123456)
+
+py manage.py makemigrations
+py manage.py migrate
+py manage.py runserver
+
+py manage.py dbshell (direct SQL code run)
+del db.sqlite3 (DB delete)
+
+
+
+
+
+Git:
+(uploading to git)
+
+
+
+git add .
+git commit -m "
+git push 
+
+

@@ -1,0 +1,136 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Register | InternHub
+{% endblock %}
+
+
+{% block content %}
+
+<section class="register-choice">
+
+    <div class="register-choice-container">
+
+
+        <!-- HEADER -->
+
+        <div class="register-choice-header">
+
+            <div class="brand-icon">
+                IH
+            </div>
+
+            <span class="section-label">
+                JOIN INTERNHUB
+            </span>
+
+            <h1>
+                Create your account
+            </h1>
+
+            <p>
+                Choose the account type that best describes you.
+            </p>
+
+        </div>
+
+
+
+        <!-- ACCOUNT OPTIONS -->
+
+        <div class="account-options">
+
+
+            <!-- ================= STUDENT ================= -->
+
+            <a
+                href="{% url 'student_register' %}"
+                class="account-card"
+            >
+
+                <div class="account-icon student-icon">
+                    🎓
+                </div>
+
+
+                <div class="account-content">
+
+                    <span class="account-label">
+                        FOR STUDENTS
+                    </span>
+
+                    <h2>
+                        Register as a Student
+                    </h2>
+
+                    <p>
+                        Create your student account to discover
+                        internships and manage your applications.
+                    </p>
+
+                    <span class="account-action">
+                        Continue as Student →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+
+            <!-- ================= COMPANY ================= -->
+
+            <a
+                href="{% url 'company_register' %}"
+                class="account-card"
+            >
+
+                <div class="account-icon company-icon">
+                    💼
+                </div>
+
+
+                <div class="account-content">
+
+                    <span class="account-label">
+                        FOR COMPANIES
+                    </span>
+
+                    <h2>
+                        Register as a Company
+                    </h2>
+
+                    <p>
+                        Create your company account to post
+                        internships and find talented students.
+                    </p>
+
+                    <span class="account-action company-action">
+                        Continue as Company →
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- LOGIN -->
+
+        <div class="register-login">
+
+            Already have an account?
+
+            <a href="{% url 'login' %}">
+                Sign in
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

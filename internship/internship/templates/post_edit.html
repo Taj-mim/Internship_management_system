@@ -1,0 +1,385 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Edit Job Post | InternHub
+{% endblock %}
+
+{% block css %}
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f8faff;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        color: #0f172a;
+    }
+
+    /* PAGE */
+
+    .page {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* HEADER */
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+        margin: 0 0 8px;
+        color: #0f172a;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .page-header p {
+        margin: 0;
+        color: #64748b;
+    }
+
+    /* FORM CARD */
+
+    .add-job-box {
+        background: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        border: 1px solid #eef2f6;
+    }
+
+    /* FORM GROUP */
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 7px;
+        color: #334155;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #dbe2ea;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+    }
+
+    textarea.form-control {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    /* TWO COLUMN ROW */
+
+    .form-row {
+        display: flex;
+        gap: 18px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    /* BUTTONS */
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 9px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background: #2563eb;
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+        color: white;
+    }
+
+    .btn-cancel {
+        background: white;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+
+    .btn-cancel:hover {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 700px) {
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .add-job-box {
+            padding: 22px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+<!-- PAGE HEADER -->
+
+<div class="page-header">
+
+    <h1>
+        Edit Job Post
+    </h1>
+
+    <p>
+        Update the job or internship opportunity.
+    </p>
+
+</div>
+
+
+<!-- EDIT JOB FORM -->
+
+<div class="add-job-box">
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <!-- JOB TITLE -->
+
+        <div class="form-group">
+
+            <label for="title">
+                Job Title
+            </label>
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-control"
+                value="{{ job.title }}"
+                required
+            >
+
+        </div>
+
+
+        <!-- ORGANIZATION -->
+
+        <div class="form-group">
+
+            <label for="organization">
+                Organization Name
+            </label>
+
+            <input
+                type="text"
+                id="organization"
+                name="organization"
+                class="form-control"
+                value="{{ job.organization }}"
+                required
+            >
+
+        </div>
+
+
+        <!-- JOB TYPE AND LOCATION -->
+
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label for="job_type">
+                    Job Type
+                </label>
+
+                <select
+                    id="job_type"
+                    name="job_type"
+                    class="form-control"
+                    required
+                >
+
+                    {% for value, label in job_types %}
+
+                        <option
+                            value="{{ value }}"
+                            {% if job.job_type == value %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="location">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    class="form-control"
+                    value="{{ job.location }}"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- SALARY AND DEADLINE -->
+
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label for="salary">
+                    Salary
+                </label>
+
+                <input
+                    type="text"
+                    id="salary"
+                    name="salary"
+                    class="form-control"
+                    value="{{ job.salary }}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="deadline">
+                    Application Deadline
+                </label>
+
+                <input
+                    type="date"
+                    id="deadline"
+                    name="deadline"
+                    class="form-control"
+                    value="{{ job.deadline|date:'Y-m-d' }}"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group">
+
+            <label for="description">
+                Job Description
+            </label>
+
+            <textarea
+                id="description"
+                name="description"
+                class="form-control"
+                required
+            >{{ job.description }}</textarea>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="form-actions">
+
+
+            <a
+                href="{% url 'CRUD_post' %}"
+                class="btn btn-cancel"
+            >
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-check-lg"></i>
+                Save Changes
+            </button>
+
+
+        </div>
+
+
+    </form>
+
+
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,428 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+Applicant Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .dashboard-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1e293b;
+    }
+
+    .welcome {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .welcome h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #2563eb;
+    }
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .section h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .job-item {
+        padding: 18px 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .job-item:last-child {
+        border-bottom: none;
+    }
+
+    .job-item h3 {
+        margin-bottom: 8px;
+    }
+
+    .job-item p {
+        color: #64748b;
+    }
+
+    .app-status {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .app-status-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .app-status-accepted {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .app-status-rejected {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 9px 14px;
+        border-radius: 7px;
+        text-decoration: none;
+        margin-top: 8px;
+        margin-right: 5px;
+    }
+
+    .apply {
+        background: #16a34a;
+        color: white;
+    }
+
+    .remove {
+        background: #dc2626;
+        color: white;
+    }
+
+    .browse {
+        background: #2563eb;
+        color: white;
+    }
+
+    .empty {
+        color: #64748b;
+        padding: 15px 0;
+    }
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .dashboard-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1e293b;
+    }
+
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .bookmark-button {
+        background: white;
+        color: #2563eb;
+        border: 2px solid #2563eb;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .bookmark-button:hover {
+        background: #2563eb;
+        color: white;
+    }
+
+    .welcome {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .welcome h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #2563eb;
+    }
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .section h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .job-item {
+        padding: 18px 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .job-item:last-child {
+        border-bottom: none;
+    }
+
+    .job-item h3 {
+        margin-bottom: 8px;
+    }
+
+    .job-item p {
+        color: #64748b;
+    }
+
+    .app-status {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .app-status-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .app-status-accepted {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .app-status-rejected {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 9px 14px;
+        border-radius: 7px;
+        text-decoration: none;
+        margin-top: 8px;
+        margin-right: 5px;
+    }
+
+    .apply {
+        background: #16a34a;
+        color: white;
+    }
+
+    .remove {
+        background: #dc2626;
+        color: white;
+    }
+
+    .browse {
+        background: #2563eb;
+        color: white;
+    }
+
+    .empty {
+        color: #64748b;
+        padding: 15px 0;
+    }
+</style>
+
+
+<div class="dashboard-container">
+
+
+    <div class="dashboard-header">
+
+        <h1 class="dashboard-title">
+            Applicant Dashboard
+        </h1>
+    </div>    
+
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <h2>
+            👋 Welcome, {{ user.username }}
+        </h2>
+
+        <p>
+            Manage your applications and bookmarked jobs
+            from here.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                {{ applications|length }}
+            </div>
+
+            <p>
+                Applications
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                {{ bookmarks|length }}
+            </div>
+
+            <p>
+                Bookmarked Jobs
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- APPLICATIONS -->
+
+    <div class="section">
+
+        <h2>
+            📄 My Applications
+        </h2>
+
+
+        {% for application in applications %}
+
+
+            <div class="job-item">
+
+                <h3>
+                    {{ application.job.title }}
+                </h3>
+
+                <p>
+                    🏢 {{ application.job.organization }}
+                </p>
+
+                <p>
+                    📍 {{ application.job.location }}
+                </p>
+
+                <p>
+                    Applied:
+                    {{ application.applied_date|date:"d M Y" }}
+                </p>
+
+                {% if application.status|lower == "accepted" %}
+
+                    <span class="app-status app-status-accepted">
+                        Accepted
+                    </span>
+
+                {% elif application.status|lower == "rejected" %}
+
+                    <span class="app-status app-status-rejected">
+                        Rejected
+                    </span>
+
+                {% else %}
+
+                    <span class="app-status app-status-pending">
+                        Pending
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+        {% empty %}
+
+
+            <div class="empty">
+
+                You haven't applied for any jobs yet.
+
+            </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+
+
+{% endblock %}

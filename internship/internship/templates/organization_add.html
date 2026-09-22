@@ -1,0 +1,90 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Add Company | InternHub
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Add Company</h2>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label>Company Name</label>
+                    <input
+                        type="text"
+                        name="organization_name"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label>Website</label>
+                    <input
+                        type="url"
+                        name="website"
+                        class="form-control"
+                        placeholder="https://example.com"
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Add Company
+                </button>
+
+                <a
+                    href="{% url 'CRUD_org' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

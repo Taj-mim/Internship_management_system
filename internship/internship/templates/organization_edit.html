@@ -1,0 +1,180 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Edit Company | InternHub
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+```
+<div class="row justify-content-center">
+
+    <div class="col-lg-7 col-md-9">
+
+        <!-- Page Header -->
+        <div class="text-center mb-4">
+
+            <h2 class="fw-bold text-dark mb-1">
+                Edit Company
+            </h2>
+
+            <p class="text-muted mb-0">
+                Update the company's account information
+            </p>
+
+        </div>
+
+        <!-- Edit Card -->
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4 p-md-5">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <!-- Company Name -->
+                    <div class="mb-4">
+
+                        <label
+                            for="organization_name"
+                            class="form-label fw-semibold"
+                        >
+                            Company Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="organization_name"
+                            name="organization_name"
+                            class="form-control form-control-lg"
+                            value="{{ organization.organization_name }}"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- Website -->
+                    <div class="mb-4">
+
+                        <label
+                            for="website"
+                            class="form-label fw-semibold"
+                        >
+                            Website
+                        </label>
+
+                        <input
+                            type="url"
+                            id="website"
+                            name="website"
+                            class="form-control form-control-lg"
+                            value="{{ organization.website }}"
+                            placeholder="https://example.com"
+                        >
+
+                    </div>
+
+                    <!-- Username -->
+                    <div class="mb-4">
+
+                        <label
+                            for="username"
+                            class="form-label fw-semibold"
+                        >
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control form-control-lg"
+                            value="{{ organization.user.username }}"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+
+                        <label
+                            for="email"
+                            class="form-label fw-semibold"
+                        >
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control form-control-lg"
+                            value="{{ organization.user.email }}"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-4">
+
+                        <label
+                            for="password"
+                            class="form-label fw-semibold"
+                        >
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control form-control-lg"
+                            placeholder="Leave empty to keep current password"
+                        >
+
+                        <div class="form-text">
+                            Only enter a password if you want to change it.
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2">
+
+                        <a
+                            href="{% url 'CRUD_org' %}"
+                            class="btn btn-light border px-4 py-2"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary px-4 py-2"
+                        >
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

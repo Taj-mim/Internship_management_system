@@ -1,0 +1,251 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+Apply - {{ job.title }} | InternHub
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.apply-container {
+
+    max-width: 750px;
+
+    margin: 10px auto 40px;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,0.08);
+}
+
+.apply-container h1 {
+    margin-bottom: 10px;
+}
+
+.company {
+
+    color: #2563eb;
+
+    font-weight: bold;
+
+    margin-bottom: 20px;
+}
+
+.description {
+
+    color: #64748b;
+
+    line-height: 1.7;
+
+    margin-bottom: 30px;
+}
+
+.apply-container label {
+
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+}
+
+.apply-container input,
+.apply-container textarea {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+}
+
+.apply-container button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    background: #2563eb;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 7px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.apply-container button:hover {
+    background: #1d4ed8;
+}
+
+.back {
+
+    display: block;
+
+    margin-top: 20px;
+
+    text-align: center;
+
+    color: #2563eb;
+
+    text-decoration: none;
+}
+
+.errors {
+    color: #dc2626;
+    margin-bottom: 20px;
+}
+
+</style>
+
+<div class="apply-container">
+
+
+    <h1>
+        Apply for {{ job.title }}
+    </h1>
+
+
+    <div class="company">
+        {{ job.organization }}
+    </div>
+
+
+    <div class="description">
+
+        {{ job.description }}
+
+        <br><br>
+
+        📍 {{ job.location }}
+
+        <br>
+
+        💼 {{ job.job_type }}
+
+        <br>
+
+        💰 {{ job.salary }}
+
+        <br>
+
+        📅 Deadline:
+        {{ job.deadline }}
+
+    </div>
+
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+
+        {% if form.errors %}
+
+            <div class="errors">
+
+                Please correct the errors below.
+
+            </div>
+
+        {% endif %}
+
+
+        <label>
+            Full Name
+        </label>
+
+        <input
+            type="text"
+            name="full_name"
+            value="{{ request.user.get_full_name }}"
+            class="form-control"
+            readonly
+        >
+        {{ form.full_name.errors }}
+
+
+
+        <label>
+            Email
+        </label>
+
+        <input
+            type="email"
+            name="email"
+            value="{{ request.user.email }}"
+            class="form-control"
+            readonly
+        >
+
+
+        {{ form.email.errors }}
+
+
+        <label>
+            Phone Number
+        </label>
+
+        {{ form.phone }}
+
+        {{ form.phone.errors }}
+
+
+        <label>
+            Resume / CV
+        </label>
+
+        {{ form.resume_file }}
+
+        {{ form.resume_file.errors }}
+
+
+        <label>
+            Cover Letter
+        </label>
+
+        {{ form.cover_letter_file }}
+
+        {{ form.cover_letter_file.errors }}
+
+
+        <button type="submit">
+            Submit Application
+        </button>
+
+    </form>
+
+
+    <a
+        href="{% url 'job_list' %}"
+        class="back"
+    >
+        ← Back to Jobs
+    </a>
+
+
+</div>
+
+{% endblock %}

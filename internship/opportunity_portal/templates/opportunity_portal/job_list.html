@@ -1,0 +1,391 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+Available Jobs
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    .page-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1e293b;
+    }
+
+    .filter-box {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .filter-form {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .filter-form input,
+    .filter-form select {
+        flex: 1;
+        min-width: 180px;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        font-size: 14px;
+    }
+
+    .filter-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 7px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .filter-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .clear-btn {
+        background: #64748b;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+    }
+
+    .job-grid {
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .job-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        transition: 0.2s;
+    }
+
+    .job-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    .job-card h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .company {
+        color: #2563eb;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .location {
+        color: #64748b;
+    }
+
+    .job-type {
+        display: inline-block;
+        background: #dbeafe;
+        color: #1d4ed8;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin: 8px 0;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .description {
+        color: #475569;
+        line-height: 1.6;
+    }
+
+    .actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        display: inline-block;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .apply-btn {
+        background: #16a34a;
+        color: white;
+    }
+
+    .apply-btn:hover {
+        background: #15803d;
+    }
+
+    .bookmark-btn {
+        background: #f59e0b;
+        color: white;
+    }
+
+    .bookmark-btn:hover {
+        background: #d97706;
+    }
+
+    .login-btn {
+        background: #2563eb;
+        color: white;
+    }
+
+    .empty {
+        background: white;
+        padding: 40px;
+        text-align: center;
+        border-radius: 12px;
+        color: #64748b;
+    }
+
+</style>
+
+
+<div class="page-container">
+
+    <h1 class="page-title">
+        Available Jobs
+    </h1>
+
+
+    <!-- ========================= -->
+    <!-- JOB FILTER -->
+    <!-- ========================= -->
+
+    <div class="filter-box">
+
+        <form method="GET"
+              class="filter-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search job title..."
+                value="{{ search }}"
+            >
+
+
+            <input
+                type="text"
+                name="location"
+                placeholder="Location..."
+                value="{{ location }}"
+            >
+
+
+            <select name="job_type">
+
+                <option value="">
+                    All Job Types
+                </option>
+
+                <option value="Full Time"
+                    {% if job_type == 'Full Time' %}
+                        selected
+                    {% endif %}
+                >
+                    Full Time
+                </option>
+
+                <option value="Part Time"
+                    {% if job_type == 'Part Time' %}
+                        selected
+                    {% endif %}
+                >
+                    Part Time
+                </option>
+
+                <option value="Internship"
+                    {% if job_type == 'Internship' %}
+                        selected
+                    {% endif %}
+                >
+                    Internship
+                </option>
+
+                <option value="Remote"
+                    {% if job_type == 'Remote' %}
+                        selected
+                    {% endif %}
+                >
+                    Remote
+                </option>
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="filter-btn">
+
+                Search / Filter
+
+            </button>
+
+
+            <a
+                href="{% url 'job_list' %}"
+                class="clear-btn">
+
+                Clear
+
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- JOB CARDS -->
+    <!-- ========================= -->
+
+    {% if jobs %}
+
+        <div class="job-grid">
+
+
+            {% for job in jobs %}
+
+                <div class="job-card">
+
+                    <h2>
+                        {{ job.title }}
+                    </h2>
+
+
+                    <p class="company">
+                        {{ job.organization }}
+                    </p>
+
+
+                    <p class="location">
+                        📍 {{ job.location }}
+                    </p>
+
+
+                    <span class="job-type">
+                        {{ job.job_type }}
+                    </span>
+
+
+                    <p class="description">
+                        {{ job.description|truncatewords:30 }}
+                    </p>
+
+
+                    <div class="actions">
+
+
+                        {% if user.is_authenticated %}
+
+
+                            {% if user.role == 'STUDENT' %}
+
+
+                                <!-- APPLY -->
+
+                                <a
+                                    href="{% url 'apply_job' job.id %}"
+                                    class="action-btn apply-btn">
+
+                                    Apply Now
+
+                                </a>
+
+
+                                <!-- BOOKMARK -->
+
+                                <a
+                                    href="{% url 'bookmark_job' job.id %}"
+                                    class="action-btn bookmark-btn">
+
+                                    {% if job.id in bookmarked_jobs %}
+
+                                        ✓ Bookmarked
+
+                                    {% else %}
+
+                                        🔖 Bookmark
+
+                                    {% endif %}
+
+                                </a>
+
+
+                            {% endif %}
+
+
+                        {% else %}
+
+
+                            <a
+                                href="{% url 'login' %}?next={% url 'apply_job' job.id %}"
+                                class="action-btn login-btn">
+
+                                Login to Apply
+
+                            </a>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+            <h2>
+                No Jobs Found
+            </h2>
+
+            <p>
+                Try changing your search or filter.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

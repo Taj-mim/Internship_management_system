@@ -1,0 +1,232 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Login | InternHub
+{% endblock %}
+
+
+{% block content %}
+
+<section class="login-page">
+
+    <div class="login-container">
+
+
+        <!-- LEFT SIDE -->
+
+        <div class="login-intro">
+
+            <span class="section-label">
+                INTERNSHIP MANAGEMENT SYSTEM
+            </span>
+
+            <h1>
+                Welcome
+                <span>back.</span>
+            </h1>
+
+            <p>
+                Sign in to your InternHub account and continue
+                managing your internships, applications,
+                and opportunities.
+            </p>
+
+
+            <div class="login-features">
+
+
+                <div class="login-feature">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Students
+                        </strong>
+
+                        <p>
+                            Find and apply for internships.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="login-feature">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Companies
+                        </strong>
+
+                        <p>
+                            Post internships and find talent.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="login-feature">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Secure Access
+                        </strong>
+
+                        <p>
+                            Access your personalized dashboard.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOGIN CARD -->
+
+        <div class="login-card">
+
+
+            <div class="login-card-header">
+
+                <div class="brand-icon">
+                    IH
+                </div>
+
+                <h2>
+                    Sign in
+                </h2>
+
+                <p>
+                    Enter your username and password.
+                </p>
+
+            </div>
+
+
+
+            <form
+                method="POST"
+                class="login-form"
+            >
+
+                {% csrf_token %}
+
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+
+
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- ERROR MESSAGE -->
+
+                {% if form.non_field_errors %}
+
+                    <div class="field-error">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Sign In
+                    <span>→</span>
+                </button>
+
+            </form>
+
+
+
+            <!-- REGISTER -->
+
+            <div class="login-register">
+
+                <p>
+                    Don't have an account?
+                </p>
+
+                <a href="{% url 'register' %}">
+                    Create an account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

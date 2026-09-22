@@ -1,0 +1,283 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+Application Management | InternHub
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .page-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .page-title {
+        margin: 0;
+        color: #1e293b;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .job-count {
+        background: #dbeafe;
+        color: #1d4ed8;
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .app-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .app-card {
+        background: white;
+        padding: 22px 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .app-card h2 {
+        margin: 0 0 6px 0;
+        font-size: 1.1rem;
+        color: #1e293b;
+    }
+
+    .app-meta {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 2px 0;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .status-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-accepted {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status-rejected {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .app-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        border: none;
+        padding: 9px 16px;
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .accept-btn {
+        background: #16a34a;
+        color: white;
+    }
+
+    .accept-btn:hover {
+        background: #15803d;
+    }
+
+    .reject-btn {
+        background: #dc2626;
+        color: white;
+    }
+
+    .reject-btn:hover {
+        background: #b91c1c;
+    }
+
+    .empty {
+        background: white;
+        padding: 50px;
+        text-align: center;
+        border-radius: 12px;
+        color: #64748b;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+</style>
+
+<div class="page-container">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1 class="page-title">
+                Application Management
+            </h1>
+
+            <p class="page-subtitle">
+                Review every application submitted across the platform
+            </p>
+
+        </div>
+
+        <span class="job-count">
+            {{ applications|length }} Applications
+        </span>
+
+    </div>
+
+
+    {% if applications %}
+
+        <div class="app-list">
+
+            {% for application in applications %}
+
+                <div class="app-card">
+
+                    <div>
+
+                        <h2>
+                            {{ application.full_name }}
+                        </h2>
+
+                        <p class="app-meta">
+                            Applied for <strong>{{ application.job.title }}</strong>
+                            at {{ application.job.organization }}
+                        </p>
+
+                        <p class="app-meta">
+                            {{ application.email }} &middot; {{ application.phone }}
+                        </p>
+
+                        <p class="app-meta">
+                            Applied {{ application.applied_date|date:"M d, Y - g:i A" }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="app-actions">
+
+                        {% if application.status|lower == "accepted" %}
+
+                            <span class="status status-accepted">
+                                Accepted
+                            </span>
+
+                        {% elif application.status|lower == "rejected" %}
+
+                            <span class="status status-rejected">
+                                Rejected
+                            </span>
+
+                        {% else %}
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                            <form
+                                method="POST"
+                                action="{% url 'update_application_status' application.id 'accepted' %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button type="submit" class="action-btn accept-btn">
+                                    <i class="bi bi-check-lg"></i>
+                                    Accept
+                                </button>
+
+                            </form>
+
+                            <form
+                                method="POST"
+                                action="{% url 'update_application_status' application.id 'rejected' %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button type="submit" class="action-btn reject-btn">
+                                    <i class="bi bi-x-lg"></i>
+                                    Reject
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <div class="fs-1 mb-3">
+                📄
+            </div>
+
+            <h2>
+                No Applications Yet
+            </h2>
+
+            <p>
+                Applications submitted by students will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

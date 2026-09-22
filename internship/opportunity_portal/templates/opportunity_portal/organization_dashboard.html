@@ -1,0 +1,1037 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+Organization Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    /* ================= GENERAL ================= */
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .dashboard-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1e293b;
+    }
+
+
+    /* ================= WELCOME ================= */
+
+    .welcome {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .welcome h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .welcome p {
+        color: #64748b;
+        margin-bottom: 0;
+    }
+
+
+    /* ================= STATISTICS ================= */
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #2563eb;
+    }
+
+    .stat-card p {
+        color: #64748b;
+        margin-bottom: 0;
+    }
+
+
+    /* ================= SECTION ================= */
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .section h2 {
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+
+    /* ================= SECTION HEADER ================= */
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+    }
+
+    .section-header h2 {
+        margin: 0;
+    }
+
+
+    /* ================= ADD INTERNSHIP BUTTON ================= */
+
+    .add-job-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        background: #2563eb;
+        color: white;
+
+        border: none;
+
+        padding: 11px 18px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        text-decoration: none;
+
+        box-shadow: 0 3px 8px rgba(37, 99, 235, 0.20);
+
+        transition: all 0.2s ease;
+    }
+
+    .add-job-btn:hover {
+        background: #1d4ed8;
+        color: white;
+
+        transform: translateY(-1px);
+
+        box-shadow: 0 5px 12px rgba(37, 99, 235, 0.25);
+    }
+
+
+    /* ================= JOB POST CARD ================= */
+
+    .job-post-card {
+        background: #ffffff;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 14px;
+
+        padding: 24px;
+
+        margin-bottom: 25px;
+
+        box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    }
+
+    .job-post-card:last-child {
+        margin-bottom: 0;
+    }
+
+
+    /* ================= JOB HEADER ================= */
+
+    .job-post-header {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+    .job-post-header h3 {
+        margin: 0 0 10px;
+
+        color: #1e293b;
+
+        font-size: 22px;
+    }
+
+
+    .job-location,
+    .job-type,
+    .job-detail {
+        margin: 6px 0;
+
+        color: #64748b;
+
+        font-size: 14px;
+    }
+
+
+    .job-description {
+        color: #475569;
+
+        line-height: 1.6;
+
+        margin: 18px 0;
+    }
+
+
+    /* ================= APPLICATION COUNT ================= */
+
+    .post-application-count {
+        min-width: 120px;
+
+        text-align: center;
+
+        background: #eff6ff;
+
+        padding: 12px 18px;
+
+        border-radius: 10px;
+    }
+
+    .post-application-count strong {
+        display: block;
+
+        font-size: 25px;
+
+        color: #2563eb;
+    }
+
+    .post-application-count span {
+        font-size: 12px;
+
+        color: #64748b;
+    }
+
+
+    /* ================= HIRING SECTION ================= */
+
+    .hiring-section {
+        margin-top: 25px;
+
+        padding-top: 22px;
+
+        border-top: 1px solid #e2e8f0;
+    }
+
+
+    .hiring-header {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        margin-bottom: 18px;
+    }
+
+
+    .hiring-header h4 {
+        margin: 0 0 5px;
+
+        font-size: 18px;
+
+        color: #1e293b;
+    }
+
+
+    .hiring-header p {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 13px;
+    }
+
+
+    .hiring-count {
+        background: #f1f5f9;
+
+        color: #475569;
+
+        padding: 7px 12px;
+
+        border-radius: 7px;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* ================= APPLICATION LIST ================= */
+
+    .applications-list {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+
+    /* ================= APPLICANT CARD ================= */
+
+    .applicant-card {
+        display: grid;
+
+        grid-template-columns:
+            1.5fr
+            1fr
+            1.2fr;
+
+        align-items: center;
+
+        gap: 20px;
+
+        background: #f8fafc;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 10px;
+
+        padding: 18px;
+    }
+
+
+    /* ================= APPLICANT INFORMATION ================= */
+
+    .applicant-name {
+        font-weight: 700;
+
+        color: #1e293b;
+
+        margin-bottom: 4px;
+    }
+
+
+    .applicant-email {
+        color: #64748b;
+
+        font-size: 13px;
+    }
+
+
+    .application-date {
+        color: #94a3b8;
+
+        font-size: 12px;
+
+        margin-top: 5px;
+    }
+
+
+    /* ================= DOCUMENTS ================= */
+
+    .applicant-documents {
+        display: flex;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .document-btn {
+        display: inline-block;
+
+        padding: 7px 10px;
+
+        background: white;
+
+        border: 1px solid #cbd5e1;
+
+        border-radius: 6px;
+
+        color: #2563eb;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 600;
+    }
+
+
+    .document-btn:hover {
+        background: #eff6ff;
+
+        color: #2563eb;
+    }
+
+
+    /* ================= STATUS ================= */
+
+    .applicant-action {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .status {
+        display: inline-block;
+
+        padding: 5px 10px;
+
+        border-radius: 6px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+    }
+
+
+    .status-pending {
+        background: #fef3c7;
+
+        color: #92400e;
+    }
+
+
+    .status-accepted {
+        background: #dcfce7;
+
+        color: #166534;
+    }
+
+
+    .status-rejected {
+        background: #fee2e2;
+
+        color: #991b1b;
+    }
+
+
+    /* ================= STATUS ACTIONS ================= */
+
+    .status-actions {
+        display: flex;
+
+        gap: 5px;
+    }
+
+
+    .status-actions form {
+        margin: 0;
+    }
+
+
+    .action-btn {
+        border: none;
+
+        padding: 7px 10px;
+
+        border-radius: 6px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+    }
+
+
+    .accept-btn {
+        background: #dcfce7;
+
+        color: #166534;
+    }
+
+
+    .accept-btn:hover {
+        background: #bbf7d0;
+    }
+
+
+    .reject-btn {
+        background: #fee2e2;
+
+        color: #991b1b;
+    }
+
+
+    .reject-btn:hover {
+        background: #fecaca;
+    }
+
+
+    /* ================= NO APPLICATIONS ================= */
+
+    .no-applications {
+        text-align: center;
+
+        padding: 30px;
+
+        background: #f8fafc;
+
+        border-radius: 10px;
+
+        border: 1px dashed #cbd5e1;
+    }
+
+
+    .no-applications span {
+        font-size: 30px;
+    }
+
+
+    .no-applications p {
+        color: #64748b;
+
+        margin: 8px 0 0;
+    }
+
+
+    /* ================= EMPTY JOBS ================= */
+
+    .empty {
+        color: #64748b;
+
+        text-align: center;
+
+        padding: 30px;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 800px) {
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+
+        .section-header {
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 15px;
+        }
+
+
+        .add-job-btn {
+            width: 100%;
+
+            justify-content: center;
+        }
+
+
+        .job-post-header {
+            flex-direction: column;
+        }
+
+
+        .post-application-count {
+            width: 100%;
+        }
+
+
+        .applicant-card {
+            grid-template-columns: 1fr;
+        }
+
+
+        .applicant-action {
+            justify-content: flex-start;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .section {
+            padding: 18px;
+        }
+
+
+        .job-post-card {
+            padding: 18px;
+        }
+
+
+        .status-actions {
+            width: 100%;
+        }
+
+
+        .status-actions form {
+            flex: 1;
+        }
+
+
+        .action-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+<div class="dashboard-container">
+
+
+    <!-- ================= TITLE ================= -->
+
+    <h1 class="dashboard-title">
+        Organization Dashboard
+    </h1>
+
+
+    <!-- ================= WELCOME ================= -->
+
+    <div class="welcome">
+
+        <h2>
+            👋 Welcome, {{ user.username }}
+        </h2>
+
+        <p>
+            Manage your internship posts and review
+            applications from here.
+        </p>
+
+    </div>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                {{ jobs|length }}
+            </div>
+
+            <p>
+                My Job Posts
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                {{ applications|length }}
+            </div>
+
+            <p>
+                Total Applications
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= MY JOB POSTS ================= -->
+
+    <div class="section">
+
+
+        <div class="section-header">
+
+            <h2>
+                💼 My Job Posts
+            </h2>
+
+
+            <a
+                href="{% url 'post_add' %}"
+                class="add-job-btn"
+            >
+                <i class="bi bi-plus-lg"></i>
+                Add Internship Post
+            </a>
+
+        </div>
+
+
+        {% for job in jobs %}
+
+
+            <!-- ================= JOB POST ================= -->
+
+            <div class="job-post-card">
+
+
+                <!-- JOB INFORMATION -->
+
+                <div class="job-post-header">
+
+
+                    <div>
+
+                        <h3>
+                            {{ job.title }}
+                        </h3>
+
+
+                        <p class="job-location">
+                            📍 {{ job.location }}
+                        </p>
+
+
+                        <p class="job-type">
+                            💼 {{ job.job_type }}
+                        </p>
+
+
+                        {% if job.salary %}
+
+                            <p class="job-detail">
+                                💰 {{ job.salary }}
+                            </p>
+
+                        {% endif %}
+
+
+                        {% if job.deadline %}
+
+                            <p class="job-detail">
+                                📅 Deadline:
+                                {{ job.deadline }}
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- APPLICATION COUNT -->
+
+                    <div class="post-application-count">
+
+                        <strong>
+                            {{ job.applications.count }}
+                        </strong>
+
+                        <span>
+                            Applications
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- JOB DESCRIPTION -->
+
+                {% if job.description %}
+
+                    <p class="job-description">
+                        {{ job.description|truncatewords:30 }}
+                    </p>
+
+                {% endif %}
+
+
+                <!-- ================= HIRING ================= -->
+
+                <div class="hiring-section">
+
+
+                    <div class="hiring-header">
+
+
+                        <div>
+
+                            <h4>
+                                👥 Hiring
+                            </h4>
+
+                            <p>
+                                Applications received for this internship
+                            </p>
+
+                        </div>
+
+
+                        <span class="hiring-count">
+
+                            {{ job.applications.count }}
+
+                        </span>
+
+
+                    </div>
+
+
+                    <!-- APPLICATIONS FOR THIS JOB -->
+
+                    {% if job.applications.all %}
+
+
+                        <div class="applications-list">
+
+
+                            {% for application in job.applications.all %}
+
+
+                                <div class="applicant-card">
+
+
+                                    <!-- APPLICANT INFORMATION -->
+
+                                    <div class="applicant-info">
+
+
+                                        <div class="applicant-name">
+
+                                            {{ application.full_name }}
+
+                                        </div>
+
+
+                                        <div class="applicant-email">
+
+                                            {{ application.email }}
+
+                                        </div>
+
+
+                                        <div class="application-date">
+
+                                            Applied:
+
+                                            {{ application.applied_date|date:"d/m/Y" }}
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- DOCUMENTS -->
+
+                                    <div class="applicant-documents">
+
+
+                                        {% if application.resume_file %}
+
+                                            <a
+                                                href="{{ application.resume_file.url }}"
+                                                class="document-btn"
+                                                target="_blank"
+                                            >
+                                                📄 Resume
+                                            </a>
+
+                                        {% endif %}
+
+
+                                        {% if application.cover_letter_file %}
+
+                                            <a
+                                                href="{{ application.cover_letter_file.url }}"
+                                                class="document-btn"
+                                                target="_blank"
+                                            >
+                                                📝 Cover Letter
+                                            </a>
+
+                                        {% endif %}
+
+
+                                        {% if not application.resume_file and not application.cover_letter_file %}
+
+                                            <span class="empty">
+                                                No documents
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- STATUS AND ACTIONS -->
+
+                                    <div class="applicant-action">
+
+
+                                        {% if application.status|lower == "accepted" %}
+
+
+                                            <span class="status status-accepted">
+                                                Accepted
+                                            </span>
+
+
+                                        {% elif application.status|lower == "rejected" %}
+
+
+                                            <span class="status status-rejected">
+                                                Rejected
+                                            </span>
+
+
+                                        {% else %}
+
+
+                                            <span class="status status-pending">
+                                                Pending
+                                            </span>
+
+
+                                            <div class="status-actions">
+
+
+                                                <!-- ACCEPT -->
+
+                                                <form
+                                                    method="POST"
+                                                    action="{% url 'update_application_status' application.id 'accepted' %}"
+                                                >
+
+                                                    {% csrf_token %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn accept-btn"
+                                                    >
+                                                        ✓ Accept
+                                                    </button>
+
+                                                </form>
+
+
+                                                <!-- REJECT -->
+
+                                                <form
+                                                    method="POST"
+                                                    action="{% url 'update_application_status' application.id 'rejected' %}"
+                                                >
+
+                                                    {% csrf_token %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn reject-btn"
+                                                    >
+                                                        ✕ Reject
+                                                    </button>
+
+                                                </form>
+
+
+                                            </div>
+
+
+                                        {% endif %}
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            {% endfor %}
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <!-- NO APPLICATIONS -->
+
+                        <div class="no-applications">
+
+                            <span>
+                                📭
+                            </span>
+
+                            <p>
+                                No applications received for this internship yet.
+                            </p>
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+
+        {% empty %}
+
+
+            <!-- NO JOB POSTS -->
+
+            <div class="empty">
+
+                <p>
+                    You haven't posted any internships yet.
+                </p>
+
+
+                <a
+                    href="{% url 'post_add' %}"
+                    class="add-job-btn"
+                >
+                    <i class="bi bi-plus-lg"></i>
+                    Create Your First Post
+                </a>
+
+            </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

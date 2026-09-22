@@ -1,0 +1,227 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+Company Registration | InternHub
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-section">
+
+    <div class="auth-card">
+
+
+        <!-- HEADER -->
+
+        <div class="auth-header">
+
+            <div class="brand-icon company-brand">
+                💼
+            </div>
+
+            <span class="section-label">
+                COMPANY ACCOUNT
+            </span>
+
+            <h1>
+                Create your company account
+            </h1>
+
+            <p>
+                Register your company and connect with
+                talented students.
+            </p>
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+            class="auth-form"
+        >
+
+            {% csrf_token %}
+
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label for="{{ form.username.id_for_label }}">
+                    Company Username
+                </label>
+
+                {{ form.username }}
+
+                {% if form.username.errors %}
+
+                    <div class="field-error">
+                        {{ form.username.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Full NAME -->
+            
+            <div class="form-group">
+            
+                <label for="{{ form.organization_name.id_for_label }}">
+                    Company Full Name
+                </label>
+            
+                {{ form.organization_name }}
+            
+                {% if form.organization_name.errors %}
+            
+                    <div class="field-error">
+                        {{ form.organization_name.errors }}
+                    </div>
+            
+                {% endif %}
+            
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="{{ form.email.id_for_label }}">
+                    Company Email
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+
+                    <div class="field-error">
+                        {{ form.email.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- WEBSITE -->
+
+            <div class="form-group">
+
+                <label for="{{ form.website.id_for_label }}">
+                    Website
+                </label>
+
+                {{ form.website }}
+
+                {% if form.website.errors %}
+
+                    <div class="field-error">
+                        {{ form.website.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="{{ form.password1.id_for_label }}">
+                    Password
+                </label>
+
+                {{ form.password1 }}
+
+                {% if form.password1.errors %}
+
+                    <div class="field-error">
+                        {{ form.password1.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="{{ form.password2.id_for_label }}">
+                    Confirm Password
+                </label>
+
+                {{ form.password2 }}
+
+                {% if form.password2.errors %}
+
+                    <div class="field-error">
+                        {{ form.password2.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            {% if form.non_field_errors %}
+
+                <div class="field-error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+
+            <button
+                type="submit"
+                class="primary-button company-button"
+            >
+                Create Company Account
+            </button>
+
+        </form>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="auth-footer">
+
+            <p>
+
+                Already have an account?
+
+                <a href="{% url 'login' %}">
+                    Sign in
+                </a>
+
+            </p>
+
+
+            <p class="change-account">
+
+                <a href="{% url 'register' %}">
+                    ← Choose a different account type
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
